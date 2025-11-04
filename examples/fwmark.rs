@@ -15,7 +15,7 @@ use neli::{
 /// Must either have network permissions (setcap) or run as sudo
 ///
 /// Will make the following rule:
-/// [PRIORITY]:  not from all fwmark 0xca6c lookup 51820
+/// [PRIORITY]:  not from all fwmark 0xca6c lookup 246813579
 ///
 /// Check via: ip rule show
 /// Delete the rule via: sudo ip rule del priority [PRIORITY]
