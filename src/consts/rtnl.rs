@@ -379,54 +379,59 @@ pub enum Ifa {
     Flags = libc::IFA_FLAGS,
 }
 
+/// Enum usable with [`Rtattr`][crate::rtnl::Rtattr] field, `rta_type`.
+///
+/// Values are fib rule attributes. Used with
+/// [`Fibmsg`][crate::rtnl::Fibmsg].
 #[allow(missing_docs)]
 #[neli_enum(serialized_type = "u16")]
 pub enum Frattr {
     Unspec = 0,
-    Dst = 1,     /* destination address */
-    Src = 2,     /* source address */
-    Iifname = 3, /* interface name */
-    Goto = 4,    /* target to jump to (FR_ACT_GOTO) */
+    Dst = 1,
+    Src = 2,
+    Iifname = 3,
+    Goto = 4,
     Unused2 = 5,
-    Priority = 6, /* priority/preference */
+    Priority = 6,
     Unused3 = 7,
     Unused4 = 8,
     Unused5 = 9,
-    Fwmark = 10, /* mark */
-    Flow = 11,   /* flow/class id */
+    Fwmark = 10,
+    Flow = 11,
     TunId = 12,
     SuppressIfgroup = 13,
     SuppressPrefixlen = 14,
-    Table = 15,  /* Extended table id */
-    Fwmask = 16, /* mask for netfilter mark */
+    Table = 15,
+    Fwmask = 16,
     Oifname = 17,
     Pad = 18,
-    L3mdev = 19,        /* iif or oif is l3mdev goto its table */
-    UidRange = 20,      /* UID range */
-    Protocol = 21,      /* Originator of the rule */
-    IpProto = 22,       /* ip proto */
-    SportRange = 23,    /* sport */
-    DportRange = 24,    /* dport */
-    Dscp = 25,          /* dscp */
-    Flowlabel = 26,     /* flowlabel */
-    FlowlabelMask = 27, /* flowlabel mask */
-    SportMask = 28,     /* sport mask */
-    DportMask = 29,     /* dport mask */
-    DscpMask = 30,      /* dscp mask */
+    L3mdev = 19,
+    UidRange = 20,
+    Protocol = 21,
+    IpProto = 22,
+    SportRange = 23,
+    DportRange = 24,
+    Dscp = 25,
+    Flowlabel = 26,
+    FlowlabelMask = 27,
+    SportMask = 28,
+    DportMask = 29,
+    DscpMask = 30,
 }
 
+/// Action for a FIB rule.
 #[allow(missing_docs)]
 #[neli_enum(serialized_type = "u8")]
 pub enum FrAct {
     Unspec = 0,
-    FrActToTbl = 1, /* Pass to fixed table */
-    FrActGoto = 2,  /* Jump to another rule */
-    FrActNop = 3,   /* No operation */
+    FrActToTbl = 1,
+    FrActGoto = 2,
+    FrActNop = 3,
     FrActRes3 = 4,
     FrActRes4 = 5,
-    FrActBlackhole = 6,   /* Drop without notification */
-    FrActUnreachable = 7, /* Drop with ENETUNREACH */
-    FrActProhibit = 8,    /* Drop with EACCES */
+    FrActBlackhole = 6,
+    FrActUnreachable = 7,
+    FrActProhibit = 8,
     FrActMax = 9,
 }
 
@@ -533,6 +538,8 @@ impl_flags!(
 );
 
 impl_flags!(
+    /// Values for `fib_flags` in
+    /// [`Fibmsg`][crate::rtnl::Fibmsg].
     #[allow(missing_docs)]
     pub Frf: u32 {
         PERMANENT = 0x01,

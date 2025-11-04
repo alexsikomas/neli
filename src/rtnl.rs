@@ -187,45 +187,6 @@ pub struct Ndmsg {
     rtattrs: RtBuffer<Nda, Buffer>,
 }
 
-/// Represents FIB message
-#[derive(Builder, Getters, Debug, Size, ToBytes, FromBytesWithInput, Header)]
-#[builder(pattern = "owned")]
-pub struct Rulemsg {
-    /// Family
-    #[getset(get = "pub")]
-    family: RtAddrFamily,
-    /// Dst length
-    #[getset(get = "pub")]
-    dst_len: libc::c_uchar,
-    /// Src length
-    #[getset(get = "pub")]
-    src_len: libc::c_uchar,
-    /// tos
-    #[getset(get = "pub")]
-    tos: libc::c_uchar,
-    /// Table
-    #[getset(get = "pub")]
-    fib_table: RtTable,
-    #[builder(setter(skip))]
-    #[builder(default = "0")]
-    pad1: u8,
-    #[builder(setter(skip))]
-    #[builder(default = "0")]
-    pad2: u8,
-    /// Fib Action
-    #[getset(get = "pub")]
-    action: FrAct,
-    /// Flags
-    #[getset(get = "pub")]
-    #[builder(default = "Frf::empty()")]
-    fib_flags: Frf,
-    /// Payload of [`Frattr`]s
-    #[neli(input = "input.checked_sub(Self::header_size()).ok_or(DeError::InvalidInput(input))?")]
-    #[getset(get = "pub")]
-    #[builder(default = "RtBuffer::new()")]
-    rtattrs: RtBuffer<Frattr, Buffer>,
-}
-
 /// Struct representing ARP cache info
 #[derive(Builder, Getters, Debug, Size, ToBytes, FromBytes)]
 #[builder(pattern = "owned")]
@@ -274,6 +235,47 @@ pub struct Tcmsg {
     #[getset(get = "pub")]
     #[builder(default = "RtBuffer::new()")]
     rtattrs: RtBuffer<Tca, Buffer>,
+}
+
+/// Routing rule message
+#[derive(Builder, Getters, Debug, Size, ToBytes, FromBytesWithInput, Header)]
+#[builder(pattern = "owned")]
+pub struct Fibmsg {
+    /// Address family
+    #[getset(get = "pub")]
+    fib_family: RtAddrFamily,
+    /// Length of destination prefix
+    #[getset(get = "pub")]
+    fib_dst_len: libc::c_uchar,
+    /// Length of source prefix
+    #[getset(get = "pub")]
+    fib_src_len: libc::c_uchar,
+    /// Type of service
+    #[getset(get = "pub")]
+    fib_tos: libc::c_uchar,
+    /// Routing table identifier
+    #[getset(get = "pub")]
+    fib_table: RtTable,
+    /// Padding
+    #[builder(setter(skip))]
+    #[builder(default = "0")]
+    pad1: u8,
+    /// Padding
+    #[builder(setter(skip))]
+    #[builder(default = "0")]
+    pad2: u8,
+    /// Rule action
+    #[getset(get = "pub")]
+    fib_action: FrAct,
+    /// Rule flags
+    #[getset(get = "pub")]
+    #[builder(default = "Frf::empty()")]
+    fib_flags: Frf,
+    /// Payload of [`Frattr`]s
+    #[neli(input = "input.checked_sub(Self::header_size()).ok_or(DeError::InvalidInput(input))?")]
+    #[getset(get = "pub")]
+    #[builder(default = "RtBuffer::new()")]
+    rtattrs: RtBuffer<Frattr, Buffer>,
 }
 
 /// Struct representing VLAN Flags
