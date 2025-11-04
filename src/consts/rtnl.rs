@@ -93,6 +93,7 @@ impl_trait!(
     IflaInfo,
     IflaVlan,
     IflaVlanQos,
+    Frattr,
 );
 
 /// Enum usable with [`Rtattr`][crate::rtnl::Rtattr] field,
@@ -378,6 +379,57 @@ pub enum Ifa {
     Flags = libc::IFA_FLAGS,
 }
 
+#[allow(missing_docs)]
+#[neli_enum(serialized_type = "u16")]
+pub enum Frattr {
+    Unspec = 0,
+    Dst = 1,     /* destination address */
+    Src = 2,     /* source address */
+    Iifname = 3, /* interface name */
+    Goto = 4,    /* target to jump to (FR_ACT_GOTO) */
+    Unused2 = 5,
+    Priority = 6, /* priority/preference */
+    Unused3 = 7,
+    Unused4 = 8,
+    Unused5 = 9,
+    Fwmark = 10, /* mark */
+    Flow = 11,   /* flow/class id */
+    TunId = 12,
+    SuppressIfgroup = 13,
+    SuppressPrefixlen = 14,
+    Table = 15,  /* Extended table id */
+    Fwmask = 16, /* mask for netfilter mark */
+    Oifname = 17,
+    Pad = 18,
+    L3mdev = 19,        /* iif or oif is l3mdev goto its table */
+    UidRange = 20,      /* UID range */
+    Protocol = 21,      /* Originator of the rule */
+    IpProto = 22,       /* ip proto */
+    SportRange = 23,    /* sport */
+    DportRange = 24,    /* dport */
+    Dscp = 25,          /* dscp */
+    Flowlabel = 26,     /* flowlabel */
+    FlowlabelMask = 27, /* flowlabel mask */
+    SportMask = 28,     /* sport mask */
+    DportMask = 29,     /* dport mask */
+    DscpMask = 30,      /* dscp mask */
+}
+
+#[allow(missing_docs)]
+#[neli_enum(serialized_type = "u8")]
+pub enum FrAct {
+    Unspec = 0,
+    FrActToTbl = 1, /* Pass to fixed table */
+    FrActGoto = 2,  /* Jump to another rule */
+    FrActNop = 3,   /* No operation */
+    FrActRes3 = 4,
+    FrActRes4 = 5,
+    FrActBlackhole = 6,   /* Drop without notification */
+    FrActUnreachable = 7, /* Drop with ENETUNREACH */
+    FrActProhibit = 8,    /* Drop with EACCES */
+    FrActMax = 9,
+}
+
 impl_flags!(
     /// Values for `ifi_flags` in
     /// [`Ifinfomsg`][crate::rtnl::Ifinfomsg].
@@ -477,5 +529,17 @@ impl_flags!(
         LOOSE_BINDING = 0x4,
         MVRP = 0x8,
         BRIDGE_BINDING = 0x10,
+    }
+);
+
+impl_flags!(
+    #[allow(missing_docs)]
+    pub Frf: u32 {
+        PERMANENT = 0x01,
+        INVERT = 0x02,
+        UNRESOLVED = 0x04,
+        IIF_DETACHED = 0x08,
+        FIB_RULE_DEV_DETACHED = 0x08,
+        FIB_RULE_OIF_DETACHED = 0x10,
     }
 );

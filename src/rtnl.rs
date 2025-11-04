@@ -14,11 +14,12 @@ use derive_builder::{Builder, UninitializedFieldError};
 use getset::Getters;
 
 use crate::{
-    self as neli, FromBytes, FromBytesWithInput, FromBytesWithInputBorrowed, Header, Size, ToBytes,
+    self as neli,
     attr::{AttrHandle, Attribute},
     consts::rtnl::*,
     err::{DeError, SerError},
     types::{Buffer, RtBuffer},
+    FromBytes, FromBytesWithInput, FromBytesWithInputBorrowed, Header, Size, ToBytes,
 };
 
 /// Struct representing interface information messages
@@ -184,6 +185,45 @@ pub struct Ndmsg {
     #[getset(get = "pub")]
     #[builder(default = "RtBuffer::new()")]
     rtattrs: RtBuffer<Nda, Buffer>,
+}
+
+/// Represents FIB message
+#[derive(Builder, Getters, Debug, Size, ToBytes, FromBytesWithInput, Header)]
+#[builder(pattern = "owned")]
+pub struct Rulemsg {
+    /// Family
+    #[getset(get = "pub")]
+    family: RtAddrFamily,
+    /// Dst length
+    #[getset(get = "pub")]
+    dst_len: libc::c_uchar,
+    /// Src length
+    #[getset(get = "pub")]
+    src_len: libc::c_uchar,
+    /// tos
+    #[getset(get = "pub")]
+    tos: libc::c_uchar,
+    /// Table
+    #[getset(get = "pub")]
+    fib_table: RtTable,
+    #[builder(setter(skip))]
+    #[builder(default = "0")]
+    pad1: u8,
+    #[builder(setter(skip))]
+    #[builder(default = "0")]
+    pad2: u8,
+    /// Fib Action
+    #[getset(get = "pub")]
+    action: FrAct,
+    /// Flags
+    #[getset(get = "pub")]
+    #[builder(default = "Frf::empty()")]
+    fib_flags: Frf,
+    /// Payload of [`Frattr`]s
+    #[neli(input = "input.checked_sub(Self::header_size()).ok_or(DeError::InvalidInput(input))?")]
+    #[getset(get = "pub")]
+    #[builder(default = "RtBuffer::new()")]
+    rtattrs: RtBuffer<Frattr, Buffer>,
 }
 
 /// Struct representing ARP cache info
