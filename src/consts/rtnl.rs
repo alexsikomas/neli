@@ -1,3 +1,4 @@
+use linux_raw_sys::netlink::*;
 use neli_proc_macros::neli_enum;
 
 use crate as neli;
@@ -386,53 +387,55 @@ pub enum Ifa {
 #[allow(missing_docs)]
 #[neli_enum(serialized_type = "u16")]
 pub enum Frattr {
-    Unspec = 0,
-    Dst = 1,
-    Src = 2,
-    Iifname = 3,
-    Goto = 4,
-    Unused2 = 5,
-    Priority = 6,
-    Unused3 = 7,
-    Unused4 = 8,
-    Unused5 = 9,
-    Fwmark = 10,
-    Flow = 11,
-    TunId = 12,
-    SuppressIfgroup = 13,
-    SuppressPrefixlen = 14,
-    Table = 15,
-    Fwmask = 16,
-    Oifname = 17,
-    Pad = 18,
-    L3mdev = 19,
-    UidRange = 20,
-    Protocol = 21,
-    IpProto = 22,
-    SportRange = 23,
-    DportRange = 24,
-    Dscp = 25,
-    Flowlabel = 26,
-    FlowlabelMask = 27,
-    SportMask = 28,
-    DportMask = 29,
-    DscpMask = 30,
+    Unspec = FRA_UNSPEC as u16,
+    Dst = FRA_DST as u16,
+    Src = FRA_SRC as u16,
+    Iifname = FRA_IIFNAME as u16,
+    Ifname = FRA_IIFNAME as u16,
+    Goto = FRA_GOTO as u16,
+    Unused2 = FRA_UNUSED2 as u16,
+    Priority = FRA_PRIORITY as u16,
+    Unused3 = FRA_UNUSED3 as u16,
+    Unused4 = FRA_UNUSED4 as u16,
+    Unused5 = FRA_UNUSED5 as u16,
+    Fwmark = FRA_FWMASK as u16,
+    Flow = FRA_FLOW as u16,
+    TunId = FRA_TUN_ID as u16,
+    SuppressIfgroup = FRA_SUPPRESS_IFGROUP as u16,
+    SuppressPrefixlen = FRA_SUPPRESS_PREFIXLEN as u16,
+    Table = FRA_TABLE as u16,
+    Fwmask = FRA_FWMASK as u16,
+    Oifname = FRA_OIFNAME as u16,
+    Pad = FRA_PAD as u16,
+    L3mdev = FRA_L3MDEV as u16,
+    UidRange = FRA_UID_RANGE as u16,
+    Protocol = FRA_PROTOCOL as u16,
+    IpProto = FRA_IP_PROTO as u16,
+    SportRange = FRA_SPORT_RANGE as u16,
+    DportRange = FRA_DPORT_RANGE as u16,
+    Dscp = FRA_DSCP as u16,
+    Flowlabel = FRA_FLOWLABEL as u16,
+    FlowlabelMask = FRA_FLOWLABEL_MASK as u16,
+    SportMask = FRA_SPORT_MASK as u16,
+    DportMask = FRA_DPORT_MASK as u16,
+    DscpMask = FRA_DSCP_MASK as u16,
+    Max = __FRA_MAX as u16,
 }
 
 /// Action for a FIB rule.
 #[allow(missing_docs)]
 #[neli_enum(serialized_type = "u8")]
 pub enum FrAct {
-    Unspec = 0,
-    FrActToTbl = 1,
-    FrActGoto = 2,
-    FrActNop = 3,
-    FrActRes3 = 4,
-    FrActRes4 = 5,
-    FrActBlackhole = 6,
-    FrActUnreachable = 7,
-    FrActProhibit = 8,
-    FrActMax = 9,
+    Unspec = FR_ACT_UNSPEC as u8,
+    FrActToTbl = FR_ACT_TO_TBL as u8,
+    FrActGoto = FR_ACT_GOTO as u8,
+    FrActNop = FR_ACT_NOP as u8,
+    FrActRes3 = FR_ACT_RES3 as u8,
+    FrActRes4 = FR_ACT_RES4 as u8,
+    FrActBlackhole = FR_ACT_BLACKHOLE as u8,
+    FrActUnreachable = FR_ACT_UNREACHABLE as u8,
+    FrActProhibit = FR_ACT_PROHIBIT as u8,
+    FrActMax = __FR_ACT_MAX as u8,
 }
 
 impl_flags!(
@@ -542,11 +545,12 @@ impl_flags!(
     /// [`Fibmsg`][crate::rtnl::Fibmsg].
     #[allow(missing_docs)]
     pub Frf: u32 {
-        PERMANENT = 0x01,
-        INVERT = 0x02,
-        UNRESOLVED = 0x04,
-        IIF_DETACHED = 0x08,
-        FIB_RULE_DEV_DETACHED = 0x08,
-        FIB_RULE_OIF_DETACHED = 0x10,
+        PERMANENT = FIB_RULE_PERMANENT,
+        INVERT = FIB_RULE_INVERT,
+        UNRESOLVED = FIB_RULE_UNRESOLVED,
+        IIF_DETACHED = FIB_RULE_IIF_DETACHED,
+        DEV_DETACHED = FIB_RULE_DEV_DETACHED,
+        OIF_DETACHED = FIB_RULE_OIF_DETACHED,
+        FIND_SADDR = FIB_RULE_FIND_SADDR,
     }
 );

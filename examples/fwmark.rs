@@ -60,10 +60,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nl_payload(NlPayload::Payload(fibmsg))
         .build()?;
 
-    let _ = socket.send(&nlmsg)?;
+    socket.send(&nlmsg)?;
 
     if let Ok(messages) = socket.recv::<Nlmsg, Nlmsgerr<Rtm>>() {
-        for msg in messages.0.into_iter() {
+        for msg in messages.0 {
             match msg {
                 Ok(val) => {
                     if *val.nl_type() == Nlmsg::Error {
@@ -113,7 +113,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // comment this out to see
     // the rule get created
-    let _ = socket.send(&nlmsg);
+    socket.send(&nlmsg)?;
 
     Ok(())
 }

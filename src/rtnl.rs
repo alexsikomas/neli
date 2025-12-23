@@ -14,12 +14,11 @@ use derive_builder::{Builder, UninitializedFieldError};
 use getset::Getters;
 
 use crate::{
-    self as neli,
+    self as neli, FromBytes, FromBytesWithInput, FromBytesWithInputBorrowed, Header, Size, ToBytes,
     attr::{AttrHandle, Attribute},
     consts::rtnl::*,
     err::{DeError, SerError},
     types::{Buffer, RtBuffer},
-    FromBytes, FromBytesWithInput, FromBytesWithInputBorrowed, Header, Size, ToBytes,
 };
 
 /// Struct representing interface information messages
@@ -276,6 +275,30 @@ pub struct Fibmsg {
     #[getset(get = "pub")]
     #[builder(default = "RtBuffer::new()")]
     rtattrs: RtBuffer<Frattr, Buffer>,
+}
+
+/// FIB UID Range
+#[derive(Builder, Getters, Debug, Size, ToBytes, FromBytesWithInput, Header)]
+#[builder(pattern = "owned")]
+pub struct FibRuleUidRange {
+    /// start of range
+    #[getset(get = "pub")]
+    start: u32,
+    /// end of range
+    #[getset(get = "pub")]
+    end: u32,
+}
+
+/// FIB Port range
+#[derive(Builder, Getters, Debug, Size, ToBytes, FromBytesWithInput, Header)]
+#[builder(pattern = "owned")]
+pub struct FibRulePortRange {
+    /// start of range
+    #[getset(get = "pub")]
+    start: u16,
+    /// end of range
+    #[getset(get = "pub")]
+    end: u16,
 }
 
 /// Struct representing VLAN Flags
