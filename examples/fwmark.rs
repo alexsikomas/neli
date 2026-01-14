@@ -41,6 +41,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .rta_payload(246813579)
             .build()?,
     );
+
+    attrs.push(
+        RtattrBuilder::default()
+            .rta_type(Frattr::Priority)
+            .rta_payload(32765)
+            .build()?,
+    );
     let attrs_clone = attrs.clone();
 
     let fibmsg = FibmsgBuilder::default()
@@ -56,7 +63,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let nlmsg = NlmsghdrBuilder::default()
         .nl_type(Rtm::Newrule)
-        .nl_flags(NlmF::REQUEST | NlmF::ACK | NlmF::EXCL | NlmF::CREATE)
+        .nl_flags(NlmF::REQUEST | NlmF::ACK | NlmF::CREATE)
         .nl_payload(NlPayload::Payload(fibmsg))
         .build()?;
 

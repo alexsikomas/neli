@@ -398,7 +398,7 @@ pub enum Frattr {
     Unused3 = FRA_UNUSED3 as u16,
     Unused4 = FRA_UNUSED4 as u16,
     Unused5 = FRA_UNUSED5 as u16,
-    Fwmark = FRA_FWMASK as u16,
+    Fwmark = FRA_FWMARK as u16,
     Flow = FRA_FLOW as u16,
     TunId = FRA_TUN_ID as u16,
     SuppressIfgroup = FRA_SUPPRESS_IFGROUP as u16,
